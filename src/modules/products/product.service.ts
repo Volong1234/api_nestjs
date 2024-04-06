@@ -37,7 +37,13 @@ export class ProductService {
         return this.products[index];
     }
 
-    deleteProducts(): string {
-        return "Delete Product";
+    deleteProducts(id: number): boolean {
+        const index = this.products.findIndex(item => item.id === Number(id));
+        if (index !== -1) {
+            this.products.slice(index, 1)
+            return true;
+        }
+        return false;
+       
     }
 }
