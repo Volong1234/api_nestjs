@@ -39,12 +39,12 @@ export class ProductController {
         }
     }
    
-    @Put(':/id')
-    updateProducts(): ResponseData<string> {
+    @Put('/:id')
+    updateProducts(@Body() productDto: ProductDto, @Param('id') id: number): ResponseData<Product> {
         try {
-            return new ResponseData<string>(this.productService.updateProducts(), HttpStatus.SUCCESS, HttpMessage.SUCCESS);
+            return new ResponseData<Product>(this.productService.updateProducts(productDto, id), HttpStatus.SUCCESS, HttpMessage.SUCCESS);
         } catch (error) {
-            return new ResponseData<string>(null, HttpStatus.ERROR, HttpMessage.ERROR);
+            return new ResponseData<Product>(null, HttpStatus.ERROR, HttpMessage.ERROR);
         }
     }
 
