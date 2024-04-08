@@ -27,7 +27,7 @@ export class ProductController {
 
     @Post()
     async create(
-        @Body() book: CreateBookDto
+        @Body(new ValidationPipe()) book: CreateBookDto
     ): Promise<ResponseData<Book>>{
         try {
             return new ResponseData<Book>( await this.productService.create(book), HttpStatus.SUCCESS, HttpMessage.SUCCESS);
