@@ -24,6 +24,22 @@ export class ProductService {
          const books = await this.bookModel.create(book); 
          return books;
     }
+
+    async detailBook(id: string): Promise<Book> {
+        const books = await this.bookModel.findById(id)
+        return books;
+    }
+
+    async updateById(id: string, book: Book): Promise<Book> {
+        return this.bookModel.findByIdAndUpdate(id, book, {
+            new: true,
+            runValidators: true,
+        })
+    }
+
+    async deleteById(id: string): Promise<Book> {
+        return this.bookModel.findByIdAndDelete(id)
+    }
      
    private products: Product[] = [
     {id:1, categoryId: 2, price: 8000, productName: "Keyboard"},

@@ -6,6 +6,7 @@ import { Product } from "src/models/product.model";
 import { ProductDto } from "src/dto/product.dto";
 import { Book} from './schemas/book.schema';
 import { CreateBookDto } from "src/dto/create-book.dto";
+import { UpdateBookDto } from "src/dto/update-book.dto";
 
 @Controller('products')
 
@@ -35,6 +36,34 @@ export class ProductController {
         }
     }
 
+    @Get('/:id')
+    async getBook(
+        @Param('id') id: string
+    ): Promise<ResponseData<Book>>{
+        try {
+            return new ResponseData<Book>(await this.productService.detailBook(id), HttpStatus.SUCCESS, HttpMessage.SUCCESS);
+        } catch (error) {
+            return new ResponseData<Book>(null, HttpStatus.ERROR, HttpMessage.ERROR);
+        }
+    }
+
+    @Put('/:id')
+    async updateBook(@Body() book: UpdateBookDto, @Param('id') id: string): Promise<ResponseData<Book>> {
+        try {
+            return new ResponseData<Book>( await this.productService.updateById(id, book), HttpStatus.SUCCESS, HttpMessage.SUCCESS);
+        } catch (error) {
+            return new ResponseData<Book>(null, HttpStatus.ERROR, HttpMessage.ERROR);
+        }
+    }
+
+    @Delete('/:id')
+    async deleteBook(@Param('id') id: string): Promise<ResponseData<Book>> {
+        try {
+            return new ResponseData<Book>( await this.productService.deleteById(id), HttpStatus.SUCCESS, HttpMessage.SUCCESS);
+        } catch (error) {
+            return new ResponseData<Book>(null, HttpStatus.ERROR, HttpMessage.ERROR);
+        }
+    }
 
     // @Get()
     // getProducts(): ResponseData<Product[]> {
@@ -45,15 +74,15 @@ export class ProductController {
     //     }
     // }
 
-    @Post() 
-    createProduct(@Body(new ValidationPipe()) productDto: ProductDto): ResponseData<Product> {
+    // @Post() 
+    // createProduct(@Body(new ValidationPipe()) productDto: ProductDto): ResponseData<Product> {
 
-        try {
-            return new ResponseData<Product>(this.productService.createProduct(productDto), HttpStatus.SUCCESS, HttpMessage.SUCCESS);
-        } catch (error) {
-            return new ResponseData<Product>(null, HttpStatus.ERROR, HttpMessage.ERROR);
-        }
-    }
+    //     try {
+    //         return new ResponseData<Product>(this.productService.createProduct(productDto), HttpStatus.SUCCESS, HttpMessage.SUCCESS);
+    //     } catch (error) {
+    //         return new ResponseData<Product>(null, HttpStatus.ERROR, HttpMessage.ERROR);
+    //     }
+    // }
 
     @Get('/:id')
     detailProducts(@Param('id') id: number ): ResponseData<Product> {
