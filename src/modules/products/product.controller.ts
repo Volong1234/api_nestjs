@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, ValidationPipe } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, ValidationPipe } from "@nestjs/common";
 import { ProductService } from "./product.service";
 import { ResponseData } from "src/global/globalClass";
 import { HttpMessage, HttpStatus } from "src/global/globalEnum";
@@ -8,6 +8,8 @@ import { Book} from './schemas/book.schema';
 import { CreateBookDto } from "src/dto/create-book.dto";
 import { UpdateBookDto } from "src/dto/update-book.dto";
 
+import {Query as ExpressQuery} from "express-serve-static-core"
+
 @Controller('products')
 
 export class ProductController {
@@ -16,10 +18,10 @@ export class ProductController {
 
 
     @Get() 
-        async getAllBooks(): Promise<ResponseData<Book[]>>{
+        async getAllBooks(@Query() query): Promise<ResponseData<Book[]>>{
         try {
             // const books = await this.productService.findAll();
-            return new ResponseData<Book[]>(await this.productService.findAll(), HttpStatus.SUCCESS, HttpMessage.SUCCESS); // Trả về ResponseData với dữ liệu là mảng books
+            return new ResponseData<Book[]>(await this.productService.findAll(query), HttpStatus.SUCCESS, HttpMessage.SUCCESS); // Trả về ResponseData với dữ liệu là mảng books
         } catch (error) {
             return new ResponseData<Book[]>(null, HttpStatus.ERROR, HttpMessage.ERROR); 
         }
