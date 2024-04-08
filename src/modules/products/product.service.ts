@@ -1,11 +1,30 @@
 import {Injectable} from '@nestjs/common'
 import { ProductDto } from 'src/dto/product.dto';
 import { Product } from 'src/models/product.model';
+import { Book} from './schemas/book.schema';
+import * as mongoose from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
+import { CreateBookDto } from 'src/dto/create-book.dto';
 
 @Injectable() 
 
 export class ProductService {
+    
+    constructor(
+        @InjectModel(Book.name)
+        private bookModel: mongoose.Model<Book>
+    ) {}
+  
+    async findAll(): Promise<Book[]> {
+        const books = await this.bookModel.find(); 
+        return books;
+    }
 
+    async create(book: CreateBookDto): Promise<Book> {
+         const books = await this.bookModel.create(book); 
+         return books;
+    }
+     
    private products: Product[] = [
     {id:1, categoryId: 2, price: 8000, productName: "Keyboard"},
     {id:2, categoryId: 3, price: 9000, productName: "Keyboard XXXXX"}
